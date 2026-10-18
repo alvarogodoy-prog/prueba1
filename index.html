@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Tecnologías Emergentes</title>
+<style>
+  :root {
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --text: #1d2433;
+    --muted: #5b6478;
+    --border: #e2e6ef;
+    --accent: #3b5bdb;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1420;
+      --surface: #1a2131;
+      --text: #e7ebf3;
+      --muted: #9aa4b8;
+      --border: #2a3347;
+      --accent: #7c9cff;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1420;
+    --surface: #1a2131;
+    --text: #e7ebf3;
+    --muted: #9aa4b8;
+    --border: #2a3347;
+    --accent: #7c9cff;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  header {
+    padding: 2.5rem 1.5rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  header h1 {
+    margin: 0 0 0.4rem;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+  header p {
+    margin: 0;
+    color: var(--muted);
+  }
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+  .badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .card h2 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+  .card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .meta {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .meta strong { color: var(--text); font-weight: 600; }
+
+  .filters {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .filters button {
+    font: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .filters button.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Panel de Tecnologías Emergentes</h1>
+  <p>Resumen visual de las tecnologías con mayor impacto potencial en los próximos años.</p>
+</header>
+
+<div class="filters" id="filters"></div>
+
+<main id="grid"></main>
+
+<script>
+  const tecnologias = [
+    {
+      icono: "🤖",
+      nombre: "IA generativa",
+      categoria: "Inteligencia artificial",
+      descripcion: "Modelos capaces de crear texto, código, imágenes y audio a partir de instrucciones en lenguaje natural.",
+      madurez: "Adopción temprana",
+      impacto: "Alto",
+      sector: "Transversal"
+    },
+    {
+      icono: "⚛️",
+      nombre: "Computación cuántica",
+      categoria: "Computación",
+      descripcion: "Procesadores que usan qubits para resolver ciertos problemas de optimización y simulación de forma mucho más eficiente.",
+      madurez: "Investigación",
+      impacto: "Alto",
+      sector: "Farmacia, finanzas, criptografía"
+    },
+    {
+      icono: "🧬",
+      nombre: "Edición genética CRISPR",
+      categoria: "Biotecnología",
+      descripcion: "Herramientas de edición precisa del ADN que abren nuevas vías para tratar enfermedades hereditarias.",
+      madurez: "Aplicación clínica",
+      impacto: "Alto",
+      sector: "Salud"
+    },
+    {
+      icono: "🔗",
+      nombre: "Blockchain",
+      categoria: "Registros distribuidos",
+      descripcion: "Registros descentralizados e inmutables que permiten trazabilidad y transacciones sin intermediarios centrales.",
+      madurez: "Adopción temprana",
+      impacto: "Medio",
+      sector: "Finanzas, logística"
+    },
+    {
+      icono: "🛰️",
+      nombre: "Internet satelital de órbita baja",
+      categoria: "Telecomunicaciones",
+      descripcion: "Constelaciones de satélites pequeños que ofrecen conectividad de banda ancha en zonas rurales y remotas.",
+      madurez: "Despliegue",
+      impacto: "Medio",
+      sector: "Telecomunicaciones, rural"
+    },
+    {
+      icono: "🦾",
+      nombre: "Robótica avanzada",
+      categoria: "Automatización",
+      descripcion: "Robots con percepción y aprendizaje que realizan tareas complejas en fábricas, almacenes y hogares.",
+      madurez: "Adopción temprana",
+      impacto: "Alto",
+      sector: "Manufactura, logística"
+    },
+    {
+      icono: "🏙️",
+      nombre: "Gemelos digitales",
+      categoria: "Simulación",
+      descripcion: "Réplicas virtuales de activos físicos que se actualizan con datos en tiempo real para predecir fallas y optimizar operaciones.",
+      madurez: "Adopción temprana",
+      impacto: "Medio",
+      sector: "Industria, construcción, infraestructura"
+    },
+    {
+      icono: "🔋",
+      nombre: "Baterías de estado sólido",
+      categoria: "Energía",
+      descripcion: "Baterías con electrolito sólido que prometen mayor densidad energética, seguridad y velocidad de carga.",
+      madurez: "Investigación",
+      impacto: "Alto",
+      sector: "Movilidad eléctrica, almacenamiento"
+    },
+    {
+      icono: "🥽",
+      nombre: "Computación espacial",
+      categoria: "Realidad extendida",
+      descripcion: "Dispositivos de realidad mixta que superponen información digital sobre el entorno físico.",
+      madurez: "Despliegue",
+      impacto: "Medio",
+      sector: "Educación, diseño, industria"
+    },
+    {
+      icono: "🌱",
+      nombre: "Hidrógeno verde",
+      categoria: "Energía",
+      descripcion: "Hidrógeno producido con electricidad renovable, usado para descarbonizar industria pesada y transporte.",
+      madurez: "Piloto",
+      impacto: "Alto",
+      sector: "Energía, industria pesada"
+    }
+  ];
+
+  const filtrosNivel = ["Todas", "Investigación", "Piloto", "Adopción temprana", "Despliegue", "Aplicación clínica"];
+  let filtroActivo = "Todas";
+
+  function renderFiltros() {
+    const cont = document.getElementById("filters");
+    cont.innerHTML = "";
+    filtrosNivel.forEach(f => {
+      const b = document.createElement("button");
+      b.textContent = f;
+      if (f === filtroActivo) b.classList.add("active");
+      b.addEventListener("click", () => {
+        filtroActivo = f;
+        renderFiltros();
+        renderCards();
+      });
+      cont.appendChild(b);
+    });
+  }
+
+  function renderCards() {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    const lista = tecnologias.filter(t =>
+      filtroActivo === "Todas" || t.madurez === filtroActivo
+    );
+    lista.forEach(t => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-top">
+          <span class="icon">${t.icono}</span>
+          <span class="badge">${t.categoria}</span>
+        </div>
+        <h2>${t.nombre}</h2>
+        <p>${t.descripcion}</p>
+        <div class="meta">
+          <span><strong>Madurez:</strong> ${t.madurez}</span>
+          <span><strong>Impacto:</strong> ${t.impacto}</span>
+        </div>
+        <div class="meta" style="margin-top:0; border-top:none; padding-top:0;">
+          <span><strong>Sectores:</strong> ${t.sector}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  renderFiltros();
+  renderCards();
+</script>
+
+</body>
+</html>
